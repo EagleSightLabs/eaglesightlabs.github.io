@@ -1,2 +1,2 @@
-# GeneralPallasBot
-A custom Twitch bot built using Node.js
+# Project Name
+Project Description
