@@ -11,6 +11,7 @@
     "lint:next": "next lint"
   },
   "dependencies": {
+    "gray-matter": "^4.0.3",
     "next": "14.0.4",
     "prismjs": "^1.29.0",
     "react": "^18",

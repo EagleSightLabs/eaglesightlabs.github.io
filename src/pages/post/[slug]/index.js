@@ -1,14 +1,17 @@
 import { useRouter } from 'next/router';
-import { getPostData } from '@lib/posts'; // Updated import path
-import Post from '@components/Post'; // Updated import path
+import Post from '@components/Post';
+import { getPostData, getAllPostSlugs } from '@lib/posts';
 
-export default function BlogPostPage({ content }) {
+export default function PostContent({ content, slug }) {
     const router = useRouter();
-    const { slug } = router.query;
+
+    // Use the slug from the router if it's available (client-side navigation)
+    // Otherwise, use the slug passed to the component (server-side rendering)
+    const postSlug = router.query.slug || slug;
 
     return (
         <div>
-            <h1>{slug}</h1>
+            <h1>{postSlug}</h1>
             <Post content={content} />
         </div>
     );
@@ -16,22 +19,19 @@ export default function BlogPostPage({ content }) {
 
 export async function getStaticProps({ params }) {
     const { slug } = params;
-    const postData = await getPostData(`${slug}.md`);
+    const postData = await getPostData(slug); // No need to append '.md' here
     return {
         props: {
-            content: postData.content, // Ensure this is the Markdown content
+            content: postData.content,
+            slug, // Pass the slug as a prop for server-side rendering
         },
     };
 }
 
 export async function getStaticPaths() {
-    // Your logic to generate paths for static generation
-    // Replace with your actual logic to list all markdown files
-    const paths = [
-        // Example: { params: { slug: 'my-first-post' } }
-    ];
+    const paths = getAllPostSlugs(); // This function should return an array of slugs
     return {
-        paths,
+        paths: paths.map((slug) => ({ params: { slug } })),
         fallback: false,
     };
 }

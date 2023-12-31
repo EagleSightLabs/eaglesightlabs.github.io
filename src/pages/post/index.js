@@ -28,7 +28,7 @@ export async function getStaticProps() {
         const slug = fileName.replace(/\.md$/, '');
         const fileContents = fs.readFileSync(
             path.join(contentDirectory, fileName),
-            'utf8'
+            'utf8',
         );
         const match = fileContents.match(/title: (.*)/);
         const title = match && match[1] ? match[1] : '';
