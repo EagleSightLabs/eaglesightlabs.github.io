@@ -19,7 +19,7 @@ jobs:
       run: npm run build
 
     - name: List output directory
-      run: ls -l out
+      run: ls -l .next
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
