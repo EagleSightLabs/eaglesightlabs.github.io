@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "dev": "next dev",
+    "export": "next export",
     "lint": "eslint . --fix",
     "lint:check": "eslint . --fix --dry-run",
-    "lint:next": "next lint"
+    "lint:next": "next lint",
+    "start": "next start"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
