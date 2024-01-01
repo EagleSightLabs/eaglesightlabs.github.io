@@ -31,7 +31,7 @@ export async function getStaticPaths() {
     const contentDirectory = path.join(process.cwd(), 'blog');
     const filenames = fs.readdirSync(contentDirectory);
 
-    const paths = filenames.map(filename => ({
+    const paths = filenames.map((filename) => ({
         params: { slug: filename.replace(/\.md$/, '') },
     }));
 

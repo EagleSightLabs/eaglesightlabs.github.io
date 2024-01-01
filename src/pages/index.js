@@ -10,9 +10,7 @@ const Home = ({ recentPosts }) => {
             <ul>
                 {recentPosts.map((post) => (
                     <li key={post.slug}>
-                        <Link href={`/post/${post.slug}`}>
-                            {post.title}
-                        </Link>
+                        <Link href={`/post/${post.slug}`}>{post.title}</Link>
                     </li>
                 ))}
             </ul>
@@ -24,7 +22,7 @@ export async function getStaticProps() {
     const contentDirectory = path.join(process.cwd(), 'blog');
     const filenames = fs.readdirSync(contentDirectory);
 
-    const posts = filenames.map(filename => {
+    const posts = filenames.map((filename) => {
         const filePath = path.join(contentDirectory, filename);
         const fileContents = fs.readFileSync(filePath, 'utf8');
         const { data } = matter(fileContents);
@@ -37,7 +35,9 @@ export async function getStaticProps() {
     });
 
     // Sort posts by date (newest first) and get the most recent 5 posts
-    const recentPosts = posts.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
+    const recentPosts = posts
+        .sort((a, b) => new Date(b.date) - new Date(a.date))
+        .slice(0, 5);
 
     return { props: { recentPosts } };
 }
