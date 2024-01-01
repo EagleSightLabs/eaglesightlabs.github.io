@@ -13,7 +13,7 @@ export default function Blog({ posts }) {
                 {posts.map((post) => (
                     <li key={post.slug}>
                         <Link href={`/blog/${post.slug}`}>
-                            <a>{post.title}</a>
+                            {post.title}
                         </Link>
                     </li>
                 ))}
