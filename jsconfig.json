@@ -1,10 +1,9 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@components/*": ["src/components/*"],
-      "@lib/*": ["src/lib/*"]
-      // Add other aliases as needed
-    }
-  }
+      "baseUrl": ".",
+      "paths": {
+          "@/*": ["./*"]
+      }
+  },
+  "exclude": ["node_modules"]
 }
