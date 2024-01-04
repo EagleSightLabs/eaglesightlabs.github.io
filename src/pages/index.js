@@ -1,45 +1,36 @@
-import Link from 'next/link';
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
+import React, { useEffect, useState } from 'react';
 
-const Home = ({ recentPosts }) => {
+const Home = () => {
+    const [Header, setHeader] = useState(null);
+    const [MainContent, setMainContent] = useState(null);
+    const [Footer, setFooter] = useState(null);
+    const themeName = process.env.NEXT_PUBLIC_THEME || 'defaultTheme';
+
+    useEffect(() => {
+        const loadComponents = async () => {
+            const HeaderModule = await import(`@/src/themes/${themeName}/components/Header`);
+            const MainContentModule = await import(`@/src/themes/${themeName}/components/MainContent`);
+            const FooterModule = await import(`@/src/themes/${themeName}/components/Footer`);
+
+            setHeader(() => HeaderModule.default);
+            setMainContent(() => MainContentModule.default);
+            setFooter(() => FooterModule.default);
+        };
+
+        loadComponents();
+    }, [themeName]);
+
+    if (!Header || !MainContent || !Footer) {
+        return <div>Loading...</div>;
+    }
+
     return (
-        <div>
-            <h1>Recent Articles</h1>
-            <ul>
-                {recentPosts.map((post) => (
-                    <li key={post.slug}>
-                        <Link href={`/post/${post.slug}`}>{post.title}</Link>
-                    </li>
-                ))}
-            </ul>
-        </div>
+        <>
+            <Header />
+            <MainContent />
+            <Footer />
+        </>
     );
 };
-
-export async function getStaticProps() {
-    const contentDirectory = path.join(process.cwd(), 'blog');
-    const filenames = fs.readdirSync(contentDirectory);
-
-    const posts = filenames.map((filename) => {
-        const filePath = path.join(contentDirectory, filename);
-        const fileContents = fs.readFileSync(filePath, 'utf8');
-        const { data } = matter(fileContents);
-
-        return {
-            slug: filename.replace(/\.md$/, ''),
-            title: data.title,
-            date: data.date ? new Date(data.date).toISOString() : null, // Convert date to ISO string
-        };
-    });
-
-    // Sort posts by date (newest first) and get the most recent 5 posts
-    const recentPosts = posts
-        .sort((a, b) => new Date(b.date) - new Date(a.date))
-        .slice(0, 5);
-
-    return { props: { recentPosts } };
-}
 
 export default Home;
