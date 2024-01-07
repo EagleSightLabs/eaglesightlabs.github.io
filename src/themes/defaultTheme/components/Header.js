@@ -18,10 +18,17 @@ const Breadcrumbs = () => {
                             <Link href="/">Home</Link>
                         </li>
                         {pathSegments.map((segment, index) => {
-                            const path = `/${pathSegments.slice(0, index + 1).join('/')}`;
+                            const path = `/${pathSegments
+                                .slice(0, index + 1)
+                                .join('/')}`;
                             const isLast = index === pathSegments.length - 1;
                             return (
-                                <li key={path} className={`breadcrumb-item ${isLast ? 'active' : ''}`}>
+                                <li
+                                    key={path}
+                                    className={`breadcrumb-item ${
+                                        isLast ? 'active' : ''
+                                    }`}
+                                >
                                     {isLast ? (
                                         segment
                                     ) : (
@@ -40,7 +47,10 @@ const Breadcrumbs = () => {
 const Header = () => {
     return (
         <header id="topbar-wrapper" aria-label="Top Bar">
-            <div id="topbar" className="d-flex align-items-center justify-content-between px-lg-3 h-100">
+            <div
+                id="topbar"
+                className="d-flex align-items-center justify-content-between px-lg-3 h-100"
+            >
                 <Breadcrumbs />
             </div>
         </header>

@@ -1,36 +1,46 @@
-import React, { useEffect, useState } from 'react';
+// src/themes/defaultTheme/components/MainContent.js
+import React, { useState, useEffect } from 'react';
+import Search from './Search';
+import PostPreview from './PostPreview';
+import Pagination from './Pagination';
 
-const MainContent = ({ posts, currentPage, totalPages }) => {
-    const [PostPreview, setPostPreview] = useState(null);
-    const [Search, setSearch] = useState(null);
-    const [Pagination, setPagination] = useState(null);
-    const themeName = process.env.NEXT_PUBLIC_THEME || 'defaultTheme';
+const MainContent = () => {
+    const [searchTerm, setSearchTerm] = useState('');
+    const [posts, setPosts] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
-        const loadComponents = async () => {
-            const PostPreviewModule = await import(`@/src/themes/${themeName}/components/PostPreview`);
-            const SearchModule = await import(`@/src/themes/${themeName}/components/Search`);
-            const PaginationModule = await import(`@/src/themes/${themeName}/components/Pagination`);
-
-            setPostPreview(PostPreviewModule.default);
-            setSearch(SearchModule.default);
-            setPagination(PaginationModule.default);
+        const fetchPosts = async () => {
+            const response = await fetch('/api/posts');
+            const data = await response.json();
+            setPosts(data.posts);
+            setTotalPages(data.totalPages);
         };
 
-        loadComponents();
-    }, [themeName]);
-
-    if (!PostPreview || !Search || !Pagination) {
-        return <div>Loading...</div>;
-    }
+        fetchPosts();
+    }, []);
 
     return (
         <div className="main-content">
-            {posts && <Search posts={posts} />}
-            {posts.map((post) => (
-                <PostPreview key={post.id} post={post} />
+            <input
+                type="search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search..."
+                aria-label="Search"
+            />
+            <Search searchTerm={searchTerm} />
+            {searchTerm === '' && posts.map((post) => (
+                <PostPreview key={post.slug} post={post} />
             ))}
-            <Pagination currentPage={currentPage} totalPages={totalPages} />
+            {searchTerm === '' && (
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                />
+            )}
         </div>
     );
 };

@@ -11,7 +11,10 @@ const Pagination = ({ currentPage, totalPages }) => {
             <ul className="pagination align-items-center">
                 {!isFirstPage && (
                     <li className="page-item">
-                        <Link href={`/${currentPage - 1}`} aria-label="Previous Page">
+                        <Link
+                            href={`/${currentPage - 1}`}
+                            aria-label="Previous Page"
+                        >
                             <a className="page-link">
                                 <i className="fas fa-angle-left"></i>
                             </a>
@@ -20,17 +23,27 @@ const Pagination = ({ currentPage, totalPages }) => {
                 )}
 
                 {/* Page numbers (can be optimized for large number of pages) */}
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                    <li key={page} className={`page-item ${page === currentPage ? 'active' : ''}`}>
-                        <Link href={`/${page}`}>
-                            <a className="page-link">{page}</a>
-                        </Link>
-                    </li>
-                ))}
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                    (page) => (
+                        <li
+                            key={page}
+                            className={`page-item ${
+                                page === currentPage ? 'active' : ''
+                            }`}
+                        >
+                            <Link href={`/${page}`}>
+                                <a className="page-link">{page}</a>
+                            </Link>
+                        </li>
+                    ),
+                )}
 
                 {!isLastPage && (
                     <li className="page-item">
-                        <Link href={`/${currentPage + 1}`} aria-label="Next Page">
+                        <Link
+                            href={`/${currentPage + 1}`}
+                            aria-label="Next Page"
+                        >
                             <a className="page-link">
                                 <i className="fas fa-angle-right"></i>
                             </a>
